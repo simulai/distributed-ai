@@ -1,0 +1,12 @@
+# 通信协议核心参数
+communication:
+  sparse_ratio: 0.1      # 保留Top 10%梯度
+  quant_bits: 8          # 8位整数量化
+  sync_interval: 5       # 每5个batch触发通信
+  grad_norm_threshold: 0.15  # 梯度变化阈值
+  confidence_threshold: 0.7   # 置信度触发线
+
+# 节点网络参数
+network:
+  max_retries: 3         # 消息重试次数
+  timeout_ms: 500        # 通信超时时间
