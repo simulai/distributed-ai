@@ -3,6 +3,27 @@ import yaml
 from multiprocessing import Process, Queue
 from .protocol import compress_grad, decompress_grad
 
+import torch.nn as nn
+
+class MiniCNN(nn.Module):
+    """0.5B参数量的小型CNN，适用于CIFAR-10/MNIST任务"""
+    def __init__(self, in_channels=3, num_classes=10):
+        super().__init__()
+        self.features = nn.Sequential(
+            nn.Conv2d(in_channels, 64, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2),
+            nn.Conv2d(64, 128, kernel_size=3, padding=1),
+            nn.AdaptiveAvgPool2d(1)
+        )
+        self.classifier = nn.Linear(128, num_classes)
+    
+    def forward(self, x):
+        x = self.features(x)
+        x = x.view(x.size(0), -1)
+        return self.classifier(x)
+
+
 class VirtualNode(Process):
     def __init__(self, node_id, comm_queue, config_path):
         super().__init__()
