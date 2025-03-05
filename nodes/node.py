@@ -5,6 +5,8 @@ from .protocol import compress_grad, decompress_grad
 
 import torch.nn as nn
 
+from utils.data_splitter import get_data_loader  
+
 class MiniCNN(nn.Module):
     """0.5B参数量的小型CNN，适用于CIFAR-10/MNIST任务"""
     def __init__(self, in_channels=3, num_classes=10):
